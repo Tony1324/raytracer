@@ -1,0 +1,4 @@
+# macos gitignore in all folders 
+
+*.DS_Store
+
