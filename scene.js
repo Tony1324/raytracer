@@ -29,13 +29,14 @@ class Sphere extends Thing {
 }
 
 class Vector{
-    constructor(x,y){
+    constructor(x,y,z){
         this.x = x
         this.y = y
+        this.z = z
     }
 
     get length(){
-        return Math.sqrt(this.x**2 + this.y**2)
+        return Math.sqrt(this.x**2 + this.y**2 + this.z**2)
     }
 
     set length(len){
@@ -44,7 +45,7 @@ class Vector{
     }
 
     copy(){
-        return new Vector(this.x, this.y)
+        return new Vector(this.x, this.y, this.z)
     }
 
     normalize(){
@@ -54,18 +55,24 @@ class Vector{
     scale(s){
         this.x *= s
         this.y *= s
+        this.z *= s
     }
 
     add(v){
         this.x += v.x
         this.y += v.y
+        this.z += v.z
     }
 
     static add(v1,v2){
-        return new Vector(v1.x + v2.x, v1.y + v2.y)
+        return new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
     }
     static scale(v, s){
-        return new Vector(v.x * s, v.y * s)
+        return new Vector(v.x * s, v.y * s, v.z * s)
+    }
+
+    static dot(v1, v2){
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z
     }
 
 }
