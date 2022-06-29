@@ -14,17 +14,43 @@ class World {
     }
 }
 
-class Thing {
-    constructor(location,{color, reflectivity, roughness, luminosity}){
-        this.properties = {color, reflectivity, roughness, luminosity}
+class Shape {
+    constructor(location,properties){
+        this.properties = properties
         this.location = location
     }
 }
 
-class Sphere extends Thing {
+class Sphere extends Shape {
     constructor(radius,location,properties){
         super(location, properties)
         this.radius = radius
+    }
+
+    checkCollision(ray){
+        //good article: http://kylehalladay.com/blog/tutorial/math/2013/12/24/Ray-Sphere-Intersection.html
+        let distRay = Vector.subtract(this.location,ray.origin)
+        let distToCenter = distRay.length
+        let rayDistToCenter = Vector.dot(distRay,ray.direction)
+        let rayDistFromCenterSquared = distToCenter ** 2 - rayDistToCenter ** 2
+
+        let radiusSquared = this.radius ** 2
+
+        let distToSurface = rayDistToCenter - Math.sqrt(radiusSquared - rayDistFromCenterSquared)
+
+        let collide = true
+        
+        if(rayDistToCenter < 0){ collide = false }
+        if(rayDistFromCenterSquared > radiusSquared){ collide = false }
+        
+        return {collide:collide, dist:distToSurface}
+    }
+}
+
+class Ray{
+    constructor(origin, direction){
+        this.origin = origin
+        this.direction = direction
     }
 }
 
@@ -50,23 +76,38 @@ class Vector{
 
     normalize(){
         this.length = 1
+        return this
     }
 
     scale(s){
         this.x *= s
         this.y *= s
         this.z *= s
+        return this
     }
 
     add(v){
         this.x += v.x
         this.y += v.y
         this.z += v.z
+        return this
+    }
+
+    subtract(v){
+        this.x -= v.x
+        this.y -= v.y
+        this.z -= v.z
+        return this
     }
 
     static add(v1,v2){
         return new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
     }
+
+    static subtract(v1,v2){
+        return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
+    }
+
     static scale(v, s){
         return new Vector(v.x * s, v.y * s, v.z * s)
     }
@@ -74,5 +115,4 @@ class Vector{
     static dot(v1, v2){
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z
     }
-
 }
