@@ -1,16 +1,23 @@
 let canvasEl = document.querySelector("#scene")
 let ctx = canvasEl.getContext("2d")
 
-let world = new World([new Sphere(20,new Vector(0,0,30),{})])
-let fieldOfView = 50
+let world = new World([new Sphere(20,new Vector(0,0,30),{}),new Sphere(7,new Vector(10,5,10),{}),new Sphere(7,new Vector(-15,-10,16),{})])
 
-for(let i = 0; i<100;i++){
-    for(let j=0; j<100;j++){
-        x = i-50
-        y = j-50
+width = 500
+height = 500
+
+ctx.canvas.width = width
+ctx.canvas.height = height
+
+let fieldOfView = 50 * width / 100
+
+for(let i = 0; i<width;i++){
+    for(let j=0; j<height;j++){
+        x = i-width/2
+        y = j-height/2
         let ray = new Ray(new Vector(0,0,0), new Vector(x,y,fieldOfView).normalize())
-        collide = false
-        dist = Infinity
+        let collide = false
+        let dist = Infinity
         for(obj of world.objects){
             result = obj.checkCollision(ray)
             dist = Math.min(dist,result.dist)

@@ -42,6 +42,8 @@ class Sphere extends Shape {
         
         if(rayDistToCenter < 0){ collide = false }
         if(rayDistFromCenterSquared > radiusSquared){ collide = false }
+
+        if(collide == false){distToSurface = Infinity}
         
         return {collide:collide, dist:distToSurface}
     }
