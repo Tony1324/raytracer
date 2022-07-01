@@ -27,16 +27,16 @@ class Sphere extends Shape {
         this.radius = radius
     }
 
-    checkCollision(ray){
+    collision(ray){
         //good article: http://kylehalladay.com/blog/tutorial/math/2013/12/24/Ray-Sphere-Intersection.html
         let distRay = Vector.subtract(this.location,ray.origin)
-        let distToCenter = distRay.length
+        let distToCenter = distRay.magnitude
         let rayDistToCenter = Vector.dot(distRay,ray.direction)
         let rayDistFromCenterSquared = distToCenter ** 2 - rayDistToCenter ** 2
 
         let radiusSquared = this.radius ** 2
 
-        let distToSurface = rayDistToCenter - Math.sqrt(radiusSquared - rayDistFromCenterSquared)
+        let distToSurface = rayDistToCenter - Math.sqrt(Math.abs(radiusSquared - rayDistFromCenterSquared))
 
         let collide = true
         
@@ -44,16 +44,10 @@ class Sphere extends Shape {
         if(rayDistFromCenterSquared > radiusSquared){ collide = false }
 
         if(collide == false){distToSurface = Infinity}
-        
-        return {collide:collide, dist:distToSurface}
-    }
 
-    findCollisionPoint(ray) {
-        let b = -2 * (ray.direction.x * this.location.x + ray.direction.y * this.location.y + ray.direction.z * this.location.z)
-        let a = ray.direction.x ** 2 + ray.direction.y ** 2 + ray.direction.z ** 2
-        let c = this.location.x ** 2 + this.location.y ** 2 + this.location.z ** 2 - this.radius ** 2
-        let t = (-b - Math.sqrt(b**2 - 4*a*c))/(2 * a)
-        return new Vector(ray.direction.x * t, ray.direction.y * t, ray.direction.z * t)
+        let point =  Vector.scale(ray.direction,distToSurface)
+        
+        return {collide:collide, dist:distToSurface, point:point, normal:Vector.subtract(point,this.location).normalize(),obj:this}
     }
 }
 
@@ -71,12 +65,12 @@ class Vector{
         this.z = z
     }
 
-    get length(){
+    get magnitude(){
         return Math.sqrt(this.x**2 + this.y**2 + this.z**2)
     }
 
-    set length(len){
-        let scaleFactor = len / this.length
+    set magnitude(len){
+        let scaleFactor = len / this.magnitude
         this.scale(scaleFactor)
     }
 
@@ -85,7 +79,7 @@ class Vector{
     }
 
     normalize(){
-        this.length = 1
+        this.magnitude = 1
         return this
     }
 
@@ -108,10 +102,6 @@ class Vector{
         this.y -= v.y
         this.z -= v.z
         return this
-    }
-
-    magnitude() {
-        return Math.sqrt(this.x ** 2, this.y ** 2, this.z ** 2)
     }
 
     static add(v1,v2){
