@@ -47,6 +47,14 @@ class Sphere extends Shape {
         
         return {collide:collide, dist:distToSurface}
     }
+
+    findCollisionPoint(ray) {
+        let b = -2 * (ray.direction.x * this.location.x + ray.direction.y * this.location.y + ray.direction.z * this.location.z)
+        let a = ray.direction.x ** 2 + ray.direction.y ** 2 + ray.direction.z ** 2
+        let c = this.location.x ** 2 + this.location.y ** 2 + this.location.z ** 2 - this.radius ** 2
+        let t = (-b - Math.sqrt(b**2 - 4*a*c))/(2 * a)
+        return new Vector(ray.direction.x * t, ray.direction.y * t, ray.direction.z * t)
+    }
 }
 
 class Ray{
@@ -100,6 +108,10 @@ class Vector{
         this.y -= v.y
         this.z -= v.z
         return this
+    }
+
+    magnitude() {
+        return Math.sqrt(this.x ** 2, this.y ** 2, this.z ** 2)
     }
 
     static add(v1,v2){
