@@ -7,20 +7,29 @@ let ctx = canvasEl.getContext("2d")
 //new Sphere(3, new Vector(-4,3,8),{reflectivity:{r:1,g:0.5,b:0.5},glow:{r:100,g:10,b:10}}),
 //new Sphere(3, new Vector(0,-3,8),{reflectivity:{r:1,g:0.5,b:0.5},glow:{r:100,g:10,b:10}})
 //])
-let world = new World([
-    new Sphere(3, new Vector(4,-30,50),{reflectivity:{r:1,g:1,b:1},glow:{r:255,g:255,b:255}}), 
-    new Sphere(10, new Vector(-4,10,50),{reflectivity:{r:1,g:0.5,b:0.5},glow:{r:0,g:0,b:0}}),
-    new Sphere(1000, new Vector(0,1020,50),{reflectivity:{r:1,g:1,b:1},glow:{r:0,g:0,b:0}})
-])
+// let world = new World([
+//     new Sphere(3, new Vector(4,-30,50),{reflectivity:{r:1,g:1,b:1},glow:{r:255,g:255,b:255}}), 
+//     new Sphere(10, new Vector(-4,10,50),{reflectivity:{r:1,g:0.5,b:0.5},glow:{r:0,g:0,b:0}}),
+//     new Sphere(1000, new Vector(0,1020,50),{reflectivity:{r:1,g:1,b:1},glow:{r:0,g:0,b:0}})
+// ])
 //let world = new World([
 //new Sphere(200, new Vector(0,205,50),{reflectivity:{r:1,g:1,b:1},glow:{r:100,g:100,b:100}}),
 //new Sphere(200, new Vector(0,-205,50),{reflectivity:{r:1,g:1,b:1},glow:{r:10,g:10,b:10}})
-//])
-//let world = new World([
-//new Sphere(30, new Vector(0,0,50),{reflectivity:{r:1,g:0.8,b:0.4},glow:{r:50,g:25,b:10}}),
-//new Sphere(500, new Vector(0,-700,50),{reflectivity:{r:1,g:1,b:1},glow:{r:200,g:200,b:200}}),
-//new Sphere(500, new Vector(0,700,50),{reflectivity:{r:1,g:1,b:1},glow:{r:200,g:200,b:200}})
-//])
+// ])
+// let world = new World([
+// new Sphere(30, new Vector(0,0,50),{reflectivity:{r:1,g:0.8,b:0.4},glow:{r:50,g:25,b:10}}),
+// new Sphere(500, new Vector(0,-700,50),{reflectivity:{r:1,g:1,b:1},glow:{r:200,g:200,b:200}}),
+// new Sphere(500, new Vector(0,700,50),{reflectivity:{r:1,g:1,b:1},glow:{r:200,g:200,b:200}})
+// ])
+let world = new World([
+    new Triangle([new Vector(-3,1,10), new Vector(3,1,10), new Vector(-3,7,10)], {reflectivity:{r:1,g:0.5,b:1}, glow:{r:0,g:0,b:0}}),
+    new Triangle([new Vector(3,7,10), new Vector(-3,7,10), new Vector(3,1,10)], {reflectivity:{r:1,g:0.5,b:1}, glow:{r:0,g:0,b:0}}),
+    new Triangle([new Vector(-3,1,13), new Vector(3,1,13), new Vector(-3,7,13)], {reflectivity:{r:0.5,g:1,b:1}, glow:{r:0,g:0,b:0}}),
+    new Triangle([new Vector(3,7,13), new Vector(-3,7,13), new Vector(3,1,13)], {reflectivity:{r:0.5,g:1,b:1}, glow:{r:0,g:0,b:0}}),
+    new Triangle([new Vector(-3,1,10), new Vector(-3,1,13), new Vector(3,1,13)], {reflectivity:{r:1,g:1,b:0.5}, glow:{r:0,g:0,b:0}}),
+    new Triangle([new Vector(3,1,10), new Vector(-3,1,10), new Vector(3,1,13)], {reflectivity:{r:1,g:1,b:0.5}, glow:{r:0,g:0,b:0}}),
+    new Sphere(0.1, new Vector(4,0,7), {reflectivity:{r:1,g:1,b:1}, glow:{r:255,g:255,b:255}})
+])
 
 
 let width = 1000
@@ -50,6 +59,7 @@ function trace(ray,depth,currentObj){
     if(!result.collide){return {r:0,g:0,b:0}}
     
     let glow = result.obj.properties.glow
+    
     let reflectivity = result.obj.properties.reflectivity
     
     let reflection = trace(reflect(result.point,ray,result.normal),depth-1,result.obj)
@@ -62,7 +72,7 @@ function trace(ray,depth,currentObj){
 }
 
 function reflect(point,ray,normal){
-    let roughness = 3
+    let roughness = 1
     let newDirection = Vector.subtract(ray.direction, Vector.scale(normal, 2 * Vector.dot(ray.direction,normal)))
     newDirection.x += (Math.random()-0.5)*roughness
     newDirection.y += (Math.random()-0.5)*roughness

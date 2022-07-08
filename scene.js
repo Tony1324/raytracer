@@ -15,16 +15,16 @@ class World {
 }
 
 class Shape {
-    constructor(location,properties){
+    constructor(properties){
         this.properties = properties
-        this.location = location
     }
 }
 
 class Sphere extends Shape {
     constructor(radius,location,properties){
-        super(location, properties)
+        super(properties)
         this.radius = radius
+        this.location = location
     }
 
     collision(ray){
@@ -43,11 +43,35 @@ class Sphere extends Shape {
         if(rayDistToCenter < 0){ collide = false }
         if(rayDistFromCenterSquared > radiusSquared){ collide = false }
 
-        if(collide == false){distToSurface = Infinity}
+        if(!collide){distToSurface = Infinity}
 
-        let point =  Vector.scale(ray.direction,distToSurface)
+        let point =  Vector.add(Vector.scale(ray.direction,distToSurface),ray.origin)
+        // let point =  Vector.scale(ray.direction,distToSurface)
         
         return {collide:collide, dist:distToSurface, point:point, normal:Vector.subtract(point,this.location).normalize(),obj:this}
+    }
+}
+
+class Triangle extends Shape {
+    constructor(points, properties){
+        super(properties)
+        this.points = points
+    }
+
+    collision(ray){
+        let planeVector = Vector.cross(Vector.subtract(this.points[1],this.points[0]),Vector.subtract(this.points[2],this.points[0])).normalize()
+        let planeOffset = Vector.dot(planeVector,this.points[0])
+        let distToSurface = (planeOffset - Vector.dot(planeVector, ray.origin))/Vector.dot(planeVector, ray.direction)
+        let point = Vector.add(Vector.scale(ray.direction,distToSurface),ray.origin)
+        let c1 = Vector.dot(Vector.cross(Vector.subtract(this.points[1],this.points[0]),Vector.subtract(point,this.points[0])),planeVector) >= 0
+        let c2 = Vector.dot(Vector.cross(Vector.subtract(this.points[2],this.points[1]),Vector.subtract(point,this.points[1])),planeVector) >= 0
+        let c3 = Vector.dot(Vector.cross(Vector.subtract(this.points[0],this.points[2]),Vector.subtract(point,this.points[2])),planeVector) >= 0
+        let collide = c1 && c2 && c3
+
+        if(!collide){distToSurface = Infinity}
+
+        return {collide:collide, dist:distToSurface, point:point, normal:planeVector, obj:this}
+        
     }
 }
 
@@ -118,5 +142,9 @@ class Vector{
 
     static dot(v1, v2){
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z
+    }
+
+    static cross(v1, v2){
+        return new Vector(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x)
     }
 }
