@@ -30,10 +30,12 @@ let world = new World([
     // new Triangle([new Vector(3, 1, 10), new Vector(-3, 1, 10), new Vector(3, 1, 13)], { reflectivity: { r: 1, g: 1, b: 0.5 }, glow: { r: 0, g: 0, b: 0 } }),
     // new Sphere(0.1, new Vector(4, 0, 7), { reflectivity: { r: 1, g: 1, b: 1 }, glow: { r: 255, g: 255, b: 255 } })
     new Triangle([new Vector(-10,-10,-10), new Vector(-10,10,-10), new Vector(10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}}),
-    new Triangle([new Vector(10,-10,-10), new Vector(10,10,-10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}}),
+    new Triangle([new Vector(10,-10,-10), new Vector(-10,10,-10), new Vector(10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}}),
     new Triangle([new Vector(-10,-10,10), new Vector(-10,10,10), new Vector(10,-10,10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}}),
-    new Triangle([new Vector(10,-10,10), new Vector(10,10,10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}}),
-    new Sphere(0.1, new Vector(0,0,6), {reflectivity: {r:1, g:1, b:1}, glow: {r:255,b:255,g:255}})
+    new Triangle([new Vector(-10,10,10), new Vector(10,10,10), new Vector(10,-10,10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}}),
+    new Triangle([new Vector(-10,-10,10), new Vector(-10,10,-10), new Vector(-10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:255,g:0,b:0}}),
+    // new Triangle([new Vector(-10,10,10), new Vector(-10,-10,10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}}),
+    new Sphere(0.1, new Vector(0,0,3), {reflectivity: {r:1, g:1, b:1}, glow: {r:255,b:255,g:255}})
 ])
 
 
@@ -46,7 +48,7 @@ ctx.canvas.height = height
 ctx.fillStyle = "rgb(0,0,0)"
 ctx.fillRect(0, 0, width, height)
 
-let fieldOfView = 50 * width / 100
+let fieldOfView = 20 * width / 100
 
 let samples = 100
 
@@ -58,7 +60,7 @@ function trace(ray, depth, currentObj) {
     let result = results
         .filter(a => a.collide)
         .reduce((a, b) => {
-            return a.dist < b.dist ? a : b
+            return a.dist <= b.dist ? a : b
         }, { collide: false, dist: Infinity })
 
     if (!result.collide) { return { r: 0, g: 0, b: 0 } }

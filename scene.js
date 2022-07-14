@@ -68,7 +68,7 @@ class Triangle extends Shape {
         let c3 = Vector.dot(Vector.cross(Vector.subtract(this.points[0], this.points[2]), Vector.subtract(point, this.points[2])), planeVector) >= 0
         let collide = c1 && c2 && c3
 
-        if (!collide) { distToSurface = Infinity }
+        if (!collide || distToSurface <= 0) { distToSurface = Infinity }
 
         return { collide: collide, dist: distToSurface, point: point, normal: planeVector, obj: this }
     }
