@@ -22,23 +22,27 @@ let ctx = canvasEl.getContext("2d")
 // new Sphere(500, new Vector(0,700,50),{reflectivity:{r:1,g:1,b:1},glow:{r:200,g:200,b:200}})
 // ])
 let world = new World([
-    new Triangle([new Vector(-10,-10,-10), new Vector(-10,10,-10), new Vector(10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:1}),
-    new Triangle([new Vector(10,-10,-10), new Vector(-10,10,-10), new Vector(10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:1}),
-    new Triangle([new Vector(-10,-10,10), new Vector(-10,10,10), new Vector(10,-10,10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:1}),
-    new Triangle([new Vector(-10,10,10), new Vector(10,10,10), new Vector(10,-10,10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:1}),
+    new Triangle([new Vector(-10,-10,-10), new Vector(-10,10,-10), new Vector(10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
+    new Triangle([new Vector(10,-10,-10), new Vector(-10,10,-10), new Vector(10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
+    new Triangle([new Vector(-10,-10,10), new Vector(-10,10,10), new Vector(10,-10,10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
+    new Triangle([new Vector(-10,10,10), new Vector(10,10,10), new Vector(10,-10,10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
     new Triangle([new Vector(-10,-10,10), new Vector(-10,10,-10), new Vector(-10,-10,-10)], {reflectivity: {r: 1, g: 0.5, b: 0.5}, glow: {r:0,g:0,b:0}, roughness:1}),
     new Triangle([new Vector(-10,-10,10), new Vector(-10,10,10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 0.5, b: 0.5}, glow: {r:0,g:0,b:0}, roughness:1}),
     new Triangle([new Vector(10,-10,10), new Vector(10,10,-10), new Vector(10,-10,-10)], {reflectivity: {r: 0.5, g: 1, b: 0.5}, glow: {r:0,g:0,b:0}, roughness:1}),
     new Triangle([new Vector(10,-10,10), new Vector(10,10,10), new Vector(10,10,-10)], {reflectivity: {r: 0.5, g: 1, b: 0.5}, glow: {r:0,g:0,b:0}, roughness:1}),
-    new Triangle([new Vector(-10,-10,10), new Vector(10,-10,10), new Vector(-10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:200,g:200,b:200}, roughness:1}),
-    new Triangle([new Vector(10,-10,10), new Vector(10,-10,-10), new Vector(-10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:200,g:200,b:200}, roughness:1}),
-    new Triangle([new Vector(-10,10,10), new Vector(10,10,10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:1}),
-    new Triangle([new Vector(10,10,10), new Vector(10,10,-10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:1}),
+    new Triangle([new Vector(-5,-10,5), new Vector(5,-10,5), new Vector(-5,-10,-5)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:600,g:500,b:400}, roughness:3}),
+    new Triangle([new Vector(5,-10,5), new Vector(5,-10,-5), new Vector(-5,-10,-5)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:1000,g:950,b:900}, roughness:3}),
+    new Triangle([new Vector(-10,-10,10), new Vector(10,-10,10), new Vector(-10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
+    new Triangle([new Vector(10,-10,10), new Vector(10,-10,-10), new Vector(-10,-10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
+    new Triangle([new Vector(-10,10,10), new Vector(10,10,10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
+    new Triangle([new Vector(10,10,10), new Vector(10,10,-10), new Vector(-10,10,-10)], {reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:3}),
+    new Sphere(3, new Vector(-5,6,6),{reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:0}),
+    new Sphere(4, new Vector(4,4,5),{reflectivity: {r: 1, g: 1, b: 1}, glow: {r:0,g:0,b:0}, roughness:5})
 ])
 
 
-let width = 500
-let height = 500
+let width = 250
+let height = 250
 
 ctx.canvas.width = width
 ctx.canvas.height = height
@@ -46,9 +50,9 @@ ctx.canvas.height = height
 ctx.fillStyle = "rgb(0,0,0)"
 ctx.fillRect(0, 0, width, height)
 
-let fieldOfView = 20 * width / 100
+let fieldOfView = 40 * width / 100
 
-let samples = 100
+let samples = 1000
 
 let pixelGrid = Array(width).fill(0).map(() => new Array(height).fill(0).map(() => { return { r: 0, g: 0, b: 0 } }))
 
@@ -89,8 +93,8 @@ function render(sample) {
         for (let j = 0; j < height; j++) {
             x = i - width / 2
             y = j - height / 2
-            let ray = new Ray(new Vector(0, 0, 0), new Vector(x, y, fieldOfView).normalize())
-            color = trace(ray, 10)
+            let ray = new Ray(new Vector(0, 0, -6), new Vector(x, y, fieldOfView).normalize())
+            color = trace(ray, 5)
             pixelGrid[i][j].r += color.r / samples
             pixelGrid[i][j].g += color.g / samples
             pixelGrid[i][j].b += color.b / samples

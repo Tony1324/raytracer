@@ -11,4 +11,6 @@ html,body{
 #scene {
     width: 800px;
     height: 800px;
+    max-width: 100vmin;
+    max-height: 100vmin;
 }
