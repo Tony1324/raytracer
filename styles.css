@@ -13,4 +13,5 @@ html,body{
     height: 800px;
     max-width: 100vmin;
     max-height: 100vmin;
+    image-rendering: crisp-edges;
 }
