@@ -14,4 +14,8 @@ html,body{
     max-width: 100vmin;
     max-height: 100vmin;
     image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+
 }
